@@ -105,7 +105,7 @@ namespace Interface
             else
                 this.Close();
         }
-
+        
         private void parametrerComposant()
         {
             Text = "Laboratoire pharmaceutique Galaxy-Swiss Bourdin - Gestion des visites";
