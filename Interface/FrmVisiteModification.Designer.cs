@@ -123,13 +123,14 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.Red;
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(174, 259);
+            button1.Location = new Point(157, 261);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 6;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "Ajouter";
+            button1.UseVisualStyleBackColor = false;
             // 
             // FrmVisiteModification
             // 
