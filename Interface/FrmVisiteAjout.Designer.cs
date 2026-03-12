@@ -168,7 +168,6 @@
             label1.Size = new Size(420, 15);
             label1.TabIndex = 15;
             label1.Text = "Liste des rendez-vous dejà programmé";
-            label1.Click += label1_Click;
             // 
             // dgvVisites
             // 
@@ -206,14 +205,10 @@
 
         #endregion
 
-        private Panel panel2;
         private Panel panelGauche;
         private Label label1;
         private Label Praticien;
         private Button button1;
-        private DateTimePicker dateTimePicker1;
-        private ComboBox comboBox2;
-        private ComboBox comboBox1;
         private Label label3;
         private Label label2;
         private Label label4;
