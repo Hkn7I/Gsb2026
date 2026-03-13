@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmVisiteModification));
             panel5 = new Panel();
+            dateTimePicker1 = new DateTimePicker();
             dtpDate = new DateTimePicker();
             label1 = new Label();
             lbDate = new Label();
@@ -40,8 +41,12 @@
             panelDroit = new Panel();
             panel2 = new Panel();
             dgvVisites = new DataGridView();
+            Visite = new DataGridViewTextBoxColumn();
+            Supprimer = new DataGridViewTextBoxColumn();
+            Date = new DataGridViewTextBoxColumn();
+            Ville = new DataGridViewTextBoxColumn();
+            Praticien = new DataGridViewTextBoxColumn();
             label2 = new Label();
-            dateTimePicker1 = new DateTimePicker();
             panel5.SuspendLayout();
             panelDroit.SuspendLayout();
             panel2.SuspendLayout();
@@ -50,7 +55,7 @@
             // 
             // lblTitre
             // 
-            lblTitre.Size = new Size(1160, 74);
+            lblTitre.Size = new Size(1270, 74);
             // 
             // panel5
             // 
@@ -67,11 +72,19 @@
             panel5.Size = new Size(438, 403);
             panel5.TabIndex = 7;
             // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Format = DateTimePickerFormat.Time;
+            dateTimePicker1.Location = new Point(30, 279);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 7;
+            // 
             // dtpDate
             // 
             dtpDate.Location = new Point(30, 244);
             dtpDate.Name = "dtpDate";
-            dtpDate.Size = new Size(189, 23);
+            dtpDate.Size = new Size(200, 23);
             dtpDate.TabIndex = 5;
             // 
             // label1
@@ -82,14 +95,14 @@
             label1.Size = new Size(112, 15);
             label1.TabIndex = 0;
             label1.Text = "Le rendez vous chez";
-            label1.Click += label1_Click;
             // 
             // lbDate
             // 
             lbDate.AutoSize = true;
+            lbDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lbDate.Location = new Point(30, 168);
             lbDate.Name = "lbDate";
-            lbDate.Size = new Size(165, 15);
+            lbDate.Size = new Size(178, 15);
             lbDate.TabIndex = 3;
             lbDate.Text = "Date et Heure du rendez vous ";
             lbDate.Click += label4_Click;
@@ -97,9 +110,11 @@
             // lbNom
             // 
             lbNom.AutoSize = true;
-            lbNom.Location = new Point(30, 110);
+            lbNom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbNom.Location = new Point(30, 99);
             lbNom.Name = "lbNom";
-            lbNom.Size = new Size(100, 15);
+            lbNom.RightToLeft = RightToLeft.No;
+            lbNom.Size = new Size(103, 15);
             lbNom.TabIndex = 1;
             lbNom.Text = "Nom du praticien";
             lbNom.Click += label2_Click;
@@ -112,13 +127,12 @@
             label3.Size = new Size(121, 15);
             label3.TabIndex = 2;
             label3.Text = "prévue initialement le";
-            label3.Click += label3_Click;
             // 
             // button1
             // 
             button1.BackColor = Color.Red;
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(205, 308);
+            button1.Location = new Point(247, 333);
             button1.Name = "button1";
             button1.Size = new Size(112, 23);
             button1.TabIndex = 6;
@@ -138,7 +152,7 @@
             // 
             panelDroit.Controls.Add(panel5);
             panelDroit.Dock = DockStyle.Right;
-            panelDroit.Location = new Point(656, 98);
+            panelDroit.Location = new Point(766, 98);
             panelDroit.Name = "panelDroit";
             panelDroit.Size = new Size(504, 419);
             panelDroit.TabIndex = 13;
@@ -150,18 +164,44 @@
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 98);
             panel2.Name = "panel2";
-            panel2.Size = new Size(656, 419);
+            panel2.Size = new Size(766, 419);
             panel2.TabIndex = 14;
             // 
             // dgvVisites
             // 
             dgvVisites.BackgroundColor = SystemColors.ButtonShadow;
             dgvVisites.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvVisites.Columns.AddRange(new DataGridViewColumn[] { Visite, Supprimer, Date, Ville, Praticien });
             dgvVisites.Dock = DockStyle.Fill;
             dgvVisites.Location = new Point(0, 15);
             dgvVisites.Name = "dgvVisites";
-            dgvVisites.Size = new Size(656, 404);
+            dgvVisites.Size = new Size(766, 404);
             dgvVisites.TabIndex = 1;
+            // 
+            // Visite
+            // 
+            Visite.HeaderText = "Visite";
+            Visite.Name = "Visite";
+            // 
+            // Supprimer
+            // 
+            Supprimer.HeaderText = "Supprimer";
+            Supprimer.Name = "Supprimer";
+            // 
+            // Date
+            // 
+            Date.HeaderText = "Date";
+            Date.Name = "Date";
+            // 
+            // Ville
+            // 
+            Ville.HeaderText = "Ville";
+            Ville.Name = "Ville";
+            // 
+            // Praticien
+            // 
+            Praticien.HeaderText = "Praticien";
+            Praticien.Name = "Praticien";
             // 
             // label2
             // 
@@ -172,21 +212,13 @@
             label2.Size = new Size(282, 15);
             label2.TabIndex = 0;
             label2.Text = "Selectionner la visite afin de modifier le rendez vous ";
-            label2.Enter += label2_Enter;
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Format = DateTimePickerFormat.Time;
-            dateTimePicker1.Location = new Point(30, 279);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
-            dateTimePicker1.TabIndex = 7;
+            label2.Click += label2_Click;
             // 
             // FrmVisiteModification
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1160, 562);
+            ClientSize = new Size(1270, 562);
             Controls.Add(panel2);
             Controls.Add(panelDroit);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -208,6 +240,9 @@
             PerformLayout();
         }
 
+
+
+
         #endregion
 
         private Panel panel5;
@@ -223,5 +258,10 @@
         private Label label2;
         private DataGridView dgvVisites;
         private DateTimePicker dateTimePicker1;
+        private DataGridViewTextBoxColumn Visite;
+        private DataGridViewTextBoxColumn Supprimer;
+        private DataGridViewTextBoxColumn Date;
+        private DataGridViewTextBoxColumn Ville;
+        private DataGridViewTextBoxColumn Praticien;
     }
 }
