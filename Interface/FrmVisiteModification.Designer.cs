@@ -39,12 +39,13 @@
             label5 = new Label();
             panelDroit = new Panel();
             panel2 = new Panel();
-            dataGridView1 = new DataGridView();
+            dgvVisites = new DataGridView();
             label2 = new Label();
+            dateTimePicker1 = new DateTimePicker();
             panel5.SuspendLayout();
             panelDroit.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvVisites).BeginInit();
             SuspendLayout();
             // 
             // lblTitre
@@ -53,6 +54,7 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(dateTimePicker1);
             panel5.Controls.Add(dtpDate);
             panel5.Controls.Add(label1);
             panel5.Controls.Add(lbDate);
@@ -143,7 +145,7 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(dataGridView1);
+            panel2.Controls.Add(dgvVisites);
             panel2.Controls.Add(label2);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 98);
@@ -151,14 +153,15 @@
             panel2.Size = new Size(656, 419);
             panel2.TabIndex = 14;
             // 
-            // dataGridView1
+            // dgvVisites
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(0, 15);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(656, 404);
-            dataGridView1.TabIndex = 1;
+            dgvVisites.BackgroundColor = SystemColors.ButtonShadow;
+            dgvVisites.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvVisites.Dock = DockStyle.Fill;
+            dgvVisites.Location = new Point(0, 15);
+            dgvVisites.Name = "dgvVisites";
+            dgvVisites.Size = new Size(656, 404);
+            dgvVisites.TabIndex = 1;
             // 
             // label2
             // 
@@ -170,6 +173,14 @@
             label2.TabIndex = 0;
             label2.Text = "Selectionner la visite afin de modifier le rendez vous ";
             label2.Enter += label2_Enter;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Format = DateTimePickerFormat.Time;
+            dateTimePicker1.Location = new Point(30, 279);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 7;
             // 
             // FrmVisiteModification
             // 
@@ -192,7 +203,7 @@
             panelDroit.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvVisites).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -210,6 +221,7 @@
         private Panel panelDroit;
         private Panel panel2;
         private Label label2;
-        private DataGridView dataGridView1;
+        private DataGridView dgvVisites;
+        private DateTimePicker dateTimePicker1;
     }
 }

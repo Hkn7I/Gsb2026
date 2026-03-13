@@ -45,5 +45,10 @@ namespace Interface
         {
 
         }
+
+        private void dgvVisites_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
