@@ -90,7 +90,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(30, 68);
+            label1.Location = new Point(30, 59);
             label1.Name = "label1";
             label1.Size = new Size(112, 15);
             label1.TabIndex = 0;
@@ -100,7 +100,7 @@
             // 
             lbDate.AutoSize = true;
             lbDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbDate.Location = new Point(30, 168);
+            lbDate.Location = new Point(30, 159);
             lbDate.Name = "lbDate";
             lbDate.Size = new Size(178, 15);
             lbDate.TabIndex = 3;
@@ -111,7 +111,7 @@
             // 
             lbNom.AutoSize = true;
             lbNom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbNom.Location = new Point(30, 99);
+            lbNom.Location = new Point(30, 90);
             lbNom.Name = "lbNom";
             lbNom.RightToLeft = RightToLeft.No;
             lbNom.Size = new Size(103, 15);
@@ -122,7 +122,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(30, 138);
+            label3.Location = new Point(30, 129);
             label3.Name = "label3";
             label3.Size = new Size(121, 15);
             label3.TabIndex = 2;
@@ -142,7 +142,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(30, 202);
+            label5.Location = new Point(30, 193);
             label5.Name = "label5";
             label5.Size = new Size(73, 15);
             label5.TabIndex = 4;
