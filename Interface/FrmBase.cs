@@ -57,6 +57,7 @@ namespace Interface
             ouvrirFormulaire(new FrmVisiteModification(session));
         }
 
+
         private void imprimerRendezvous_Click(object sender, EventArgs e)
         {
             // ouvrirFormulaire(new FrmVisiteImpression(session));
