@@ -27,7 +27,7 @@ namespace Metier
         public int Id { get; }
         public Praticien LePraticien { get; private set; }
         public Motif LeMotif { get; private set; }
-        public DateTime DateEtHeure { get; private set; }
+        public DateTime DateEtHeure { get; set; }
         public string? Bilan { get; private set; }
         public Medicament? PremierMedicament { get; private set; }
         public Medicament? SecondMedicament { get; private set; }

@@ -41,11 +41,6 @@
             panelDroit = new Panel();
             panel2 = new Panel();
             dgvVisites = new DataGridView();
-            Visite = new DataGridViewTextBoxColumn();
-            Supprimer = new DataGridViewTextBoxColumn();
-            Date = new DataGridViewTextBoxColumn();
-            Ville = new DataGridViewTextBoxColumn();
-            Praticien = new DataGridViewTextBoxColumn();
             label2 = new Label();
             panel5.SuspendLayout();
             panelDroit.SuspendLayout();
@@ -105,7 +100,6 @@
             lbDate.Size = new Size(178, 15);
             lbDate.TabIndex = 3;
             lbDate.Text = "Date et Heure du rendez vous ";
-            lbDate.Click += label4_Click;
             // 
             // lbNom
             // 
@@ -117,7 +111,6 @@
             lbNom.Size = new Size(103, 15);
             lbNom.TabIndex = 1;
             lbNom.Text = "Nom du praticien";
-            lbNom.Click += label2_Click;
             // 
             // label3
             // 
@@ -171,37 +164,11 @@
             // 
             dgvVisites.BackgroundColor = SystemColors.ButtonShadow;
             dgvVisites.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvVisites.Columns.AddRange(new DataGridViewColumn[] { Visite, Supprimer, Date, Ville, Praticien });
             dgvVisites.Dock = DockStyle.Fill;
             dgvVisites.Location = new Point(0, 15);
             dgvVisites.Name = "dgvVisites";
             dgvVisites.Size = new Size(766, 404);
             dgvVisites.TabIndex = 1;
-            // 
-            // Visite
-            // 
-            Visite.HeaderText = "Visite";
-            Visite.Name = "Visite";
-            // 
-            // Supprimer
-            // 
-            Supprimer.HeaderText = "Supprimer";
-            Supprimer.Name = "Supprimer";
-            // 
-            // Date
-            // 
-            Date.HeaderText = "Date";
-            Date.Name = "Date";
-            // 
-            // Ville
-            // 
-            Ville.HeaderText = "Ville";
-            Ville.Name = "Ville";
-            // 
-            // Praticien
-            // 
-            Praticien.HeaderText = "Praticien";
-            Praticien.Name = "Praticien";
             // 
             // label2
             // 
@@ -212,7 +179,6 @@
             label2.Size = new Size(282, 15);
             label2.TabIndex = 0;
             label2.Text = "Selectionner la visite afin de modifier le rendez vous ";
-            label2.Click += label2_Click;
             // 
             // FrmVisiteModification
             // 
@@ -239,6 +205,8 @@
             ResumeLayout(false);
             PerformLayout();
         }
+
+
 
 
 

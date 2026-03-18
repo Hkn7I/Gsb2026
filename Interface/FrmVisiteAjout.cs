@@ -259,7 +259,7 @@ namespace Interface
                 return;
             }
 
-            // vérifier si c'est un diamanche
+            // vérifier si c'est un dimanche
             if (dtpDate.Value.DayOfWeek == DayOfWeek.Sunday)
             {
                 MessageBox.Show("Veuillez sélectionner une date qui n'est pas un dimanche.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
