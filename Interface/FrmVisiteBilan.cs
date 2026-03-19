@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metier;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,11 +9,15 @@ using System.Windows.Forms;
 
 namespace Interface
 {
-    public partial class FrmVisiteBilan : Form
+    public partial class FrmVisiteBilan : FrmBase
     {
-        public FrmVisiteBilan()
+        public FrmVisiteBilan(Session uneSession) : base(uneSession)
         {
             InitializeComponent();
         }
+
+       
+
+        
     }
 }

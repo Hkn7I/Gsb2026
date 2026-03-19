@@ -93,7 +93,7 @@ namespace Interface
             #region paramètrage concernant la ligne d'entête 
 
             dgv.ColumnHeadersVisible = true;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dgv.EnableHeadersVisualStyles = false;
             DataGridViewCellStyle style = dgv.ColumnHeadersDefaultCellStyle;
             style.BackColor = Color.WhiteSmoke;
@@ -101,7 +101,7 @@ namespace Interface
             style.SelectionBackColor = Color.WhiteSmoke;
             style.SelectionForeColor = Color.Black;
             style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            style.Font = new Font("Georgia", 12, FontStyle.Bold);
+            style.Font = new Font("Georgia", 11, FontStyle.Bold);
 
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dgv.ColumnHeadersHeight = 40;
@@ -123,14 +123,16 @@ namespace Interface
 
             #region paramètrage au niveau des cellules
 
-            dgv.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgv.GridColor = Color.Black;
             dgv.RowsDefaultCellStyle.BackColor = Color.White;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 238, 238, 238);
 
             #endregion
 
             #region paramètrage au niveau de la zone sélectionnée
 
-            dgv.RowsDefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+            dgv.RowsDefaultCellStyle.SelectionBackColor = Color.Lavender;
             dgv.RowsDefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
 
             #endregion
@@ -210,8 +212,8 @@ namespace Interface
                 dgvVisites.Rows.Add(
                          v,
                          Properties.Resources.supprimer,
-                         v.DateEtHeure.ToLongDateString(),
-                         v.DateEtHeure.ToShortTimeString(),
+                         v.DateEtHeure.ToString("dddd d MMMM yyyy"),
+                         v.DateEtHeure.ToString("HH:mm"),
                          v.LePraticien.Ville,
                          v.LePraticien.NomPrenom);
             }

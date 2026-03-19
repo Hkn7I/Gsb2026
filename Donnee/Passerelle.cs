@@ -409,16 +409,6 @@ namespace Donnee
         }
 
         /// <summary>
-        /// Enregistre le bilan d'une visite et les échantillons associés.
-        /// </summary>
-        /// <param name="uneVisite">Visite à enregistrer</param>
-        static public void enregistrerBilan(Visite uneVisite)
-        {
-
-
-        }
-
-        /// <summary>
         /// Ajoute un nouveau praticien en base de données.
         /// </summary>
         /// <param name="nom">Nom du praticien</param>
@@ -441,8 +431,38 @@ namespace Donnee
         /// Modifie les informations d'un praticien en base de données.
         /// </summary>
         /// <param name="lePraticien">Objet Praticien contenant les nouvelles informations</param>
-        static public void modifierPraticien(Praticien lePraticien)
+        /// <summary>
+        /// Enregistre le bilan d'une visite et les échantillons associés.
+        /// </summary>
+        /// <param name="uneVisite">Visite à enregistrer</param>
+        static public void enregistrerBilan(Visite uneVisite)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
+            using MySqlTransaction uneTransaction = cnx.BeginTransaction();
+
+            try
+            {
+                // j appelle la procedure pour mettre a jour le bilan de la visite
+                using MySqlCommand cmd = new MySqlCommand("enregistrerBilanVisite", cnx);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Transaction = uneTransaction;
+
+                cmd.Parameters.AddWithValue("_idVisite", uneVisite.Id);
+                cmd.Parameters.AddWithValue("_bilan", uneVisite.Bilan);
+                cmd.Parameters.AddWithValue("_premierMedicament", uneVisite.PremierMedicament?.Id ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("_secondMedicament", uneVisite.SecondMedicament?.Id ?? (object)DBNull.Value);
+
+                cmd.ExecuteNonQuery();
+
+                // tout s est bien passé je valide la transaction
+                uneTransaction.Commit();
+            }
+            catch (Exception e)
+            {
+                // une erreur s est produite j annule tout
+                uneTransaction.Rollback();
+                throw new Exception("Erreur lors de l'enregistrement du bilan : " + e.Message);
+            }
         }
 
         /// <summary>
