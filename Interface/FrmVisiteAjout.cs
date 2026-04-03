@@ -37,6 +37,9 @@ namespace Interface
             // titre de la fenêtre
             this.lblTitre.Text = "Ajouter une visite";
 
+            // cablage de l'événement clic du bouton
+            this.button1.Click += new System.EventHandler(this.btnAjouter_Click);
+
             // alimentation de la zone de liste des praticiens
             foreach (Praticien unPraticien in session.MesPraticiens)
             {
@@ -273,11 +276,11 @@ namespace Interface
                 return;
             }
 
-            // vérifier les conflits de rendez-vous pour le praticien sélectionné
+            // vérifier les conflits de rendez-vous pour le praticien sélectionné (même date et heure)
             Praticien p = (Praticien)cbxPraticien.SelectedItem!;
-            if (session.MesVisites.Any(v => v.LePraticien == p && v.Bilan is null))
+            if (session.MesVisites.Any(v => v.LePraticien == p && v.DateEtHeure == dtpDate.Value))
             {
-                MessageBox.Show("Le praticien sélectionné a déjà un rendez-vous programmé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Le praticien sélectionné a déjà un rendez-vous programmé à cette date et heure.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

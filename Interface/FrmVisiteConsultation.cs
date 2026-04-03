@@ -1,14 +1,12 @@
-﻿using Donnee;
-using Metier;
-using Microsoft.VisualBasic;
+﻿using Metier;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Text;
 using System.Windows.Forms;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Interface
 {
@@ -18,26 +16,99 @@ namespace Interface
         {
             InitializeComponent();
             centrerFormulaire();
-            parametrerComposant();
-            remplirDgv();
+            this.Load += FrmVisiteConsultation_Load;
+            this.Resize += FrmVisiteConsultation_Resize;
         }
+
+        private void FrmVisiteConsultation_Load(object? sender, EventArgs e)
+        {
+            parametrerComposant();
+            centrerFormulaire();
+            remplirDgvVisites();
+        }
+
+        private void FrmVisiteConsultation_Resize(object? sender, EventArgs e)
+        {
+            centrerFormulaire();
+        }
+
         private void centrerFormulaire()
         {
             panelCentral.Left = (this.ClientSize.Width - panelCentral.Width) / 2;
         }
 
-
-
+        private void dgvVisites_SelectionChanged(object sender, EventArgs e)
+        {
+            afficher();
+        }
 
         private void parametrerComposant()
         {
+
             // titre de la fenêtre
             this.lblTitre.Text = "Consultation des visites";
+            centrerFormulaire();
+
             // paramétrage du datagridview
+            parametrerDgvEchantillon();
+
             parametrerDgv(dgvVisites);
         }
 
+        private void parametrerDgvEchantillon()
+        {
+            dgvEchantillon.Enabled = false;
 
+            //style général 
+            dgvEchantillon.Font = new Font("Segoe UI", 10);
+            dgvEchantillon.RowTemplate.Height = 28;
+            dgvEchantillon.BorderStyle = BorderStyle.FixedSingle;
+
+            //bordures des cellules
+            dgvEchantillon.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvEchantillon.GridColor = Color.LightGray;
+
+            //suppression selection visuelle
+            dgvEchantillon.DefaultCellStyle.SelectionBackColor = Color.White;
+            dgvEchantillon.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            // entete visible et stylé
+
+            dgvEchantillon.ColumnHeadersVisible = true;
+            dgvEchantillon.EnableHeadersVisualStyles = false;
+            dgvEchantillon.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
+            dgvEchantillon.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            dgvEchantillon.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvEchantillon.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            //colonnes
+
+            dgvEchantillon.Columns.Clear();
+
+            //colonne nom 
+            DataGridViewColumn col = new DataGridViewTextBoxColumn();
+            col.Name = "Nom";
+            col.HeaderText = "Nom";
+            col.Width = 200;
+            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            //colonne quantité
+            DataGridViewColumn colQte = new DataGridViewTextBoxColumn();
+            colQte.Name = "Quantite";
+            colQte.HeaderText = "Quantité";
+            colQte.Width = 100;
+            colQte.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // ajout des colonnes datagridview
+            dgvEchantillon.Columns.Add(col);
+            dgvEchantillon.Columns.Add(colQte);
+
+            // ajustement automatique des colonnes
+            dgvEchantillon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // ajustement largeur totale
+            dgvEchantillon.Width = getLargeur(dgvEchantillon);
+        }
         private void parametrerDgv(DataGridView dgv)
         {
             // initialisation du datagridview : supprimerRendezVous des colonnes et des lignes ajoutées par défaut dans le composant
@@ -170,9 +241,10 @@ namespace Interface
             // la première colonne contient l'objet visite : elle est masquée
             col = new DataGridViewTextBoxColumn();
             col.Name = "Visite";
-            col.HeaderText = "Visite";
+            col.HeaderText = "";
             col.Visible = false;
             dgv.Columns.Add(col);
+
 
             // Colonne 0 : La date de la visite
             col = new DataGridViewTextBoxColumn();
@@ -191,7 +263,7 @@ namespace Interface
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns.Add(col);
 
-            // Colonne 2 : ville du rendez-vous
+            // Colonne 2 ! ville du rendez-vous
             col = new DataGridViewTextBoxColumn();
             col.Name = "Lieu";
             col.HeaderText = "sur";
@@ -199,55 +271,105 @@ namespace Interface
             col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns.Add(col);
 
+
             // faut-il désactiver le tri sur toutes les colonnes ? (commenter les lignes si non)
             for (int i = 0; i < dgv.ColumnCount; i++)
                 dgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            #endregion
         }
-        private void remplirDgv()
+        private int getLargeur(DataGridView dgv)
+        {
+            int largeur = 0;
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                if (col.Visible)
+                    largeur += col.Width;
+            }
+            if (dgv.RowHeadersVisible)
+                largeur += dgv.RowHeadersWidth;
+
+            return largeur + 2; // 2 pixels de marge
+        }
+        private void remplirDgvVisites()
         {
             // vider le datagridview
             dgvVisites.Rows.Clear();
 
-            int ligne = 0;
             // Parcourir les visites dans l'ordre chronologique
-            foreach (Visite v in session.MesVisites.OrderBy(v => v.DateEtHeure))
+            foreach (Visite v in session.MesVisites)
             {
-                dgvVisites.Rows.Add(
+                // add the Visite object in the hidden first column followed by display values
+                int rowIndex = dgvVisites.Rows.Add(
                          v,
-                         v.DateEtHeure.ToLongDateString(),
+                         v.DateEtHeure.ToString("dddd d MMMM yyyy", new System.Globalization.CultureInfo("fr-FR")),
                          v.DateEtHeure.ToString("HH:mm"),
-                         v.LePraticien.Ville);
+                         v.LePraticien != null ? v.LePraticien.Ville : string.Empty);
 
-                if (v.Bilan != null)
+                if (string.IsNullOrEmpty(v.Bilan))
                 {
-                    for (int i = 1; i <= 3; i++)
-                    { dgvVisites.Rows[ligne].Cells[i].Style.ForeColor = Color.Green; }
+                    // color the displayed cells in green when a bilan is empty
+                    var cells = dgvVisites.Rows[rowIndex].Cells;
+                    // parcourir uniquement les cellules réellement présentes (sauter la colonne cachée index 0)
+                    for (int i = 1; i < cells.Count; i++)
+                    {
+                        cells[i].Style.ForeColor = Color.Green;
+                    }
                 }
-                ligne++;
             }
-            //afficher le détail de la première visite contenue dans le datagridview
+            // afficher les détails de la première visite
             afficher();
         }
-
-        // Afficher le détail de la visite sélectionnée dans le datagridview
+        // afficher la visite sélectionnée dans le datagridview
         private void afficher()
         {
             if (dgvVisites.Rows.Count == 0 || dgvVisites.SelectedRows.Count == 0)
             {
-                return; 
+                ViderAffichage();
+                return;
             }
-            //afficher le détail de la visite sélectionnée
-            Visite uneVisite = (Visite)dgvVisites.SelectedRows[0].Cells[0].Value;
-            lblPraticien.Text = uneVisite.LePraticien.NomPrenom;
-            lblEmail.Text = uneVisite.LePraticien.Email;
-            lblRue.Text = uneVisite.LePraticien.Rue;
-            lblTelephone.Text = uneVisite.LePraticien.Telephone;
-            lblType.Text = uneVisite.LePraticien.Type != null ? uneVisite.LePraticien.Type.Libelle : "";
-            lblSpecialite.Text = uneVisite.LePraticien.Specialite != null ? uneVisite.LePraticien.Specialite.Libelle : "";
-        }
-    }
-}
 
-    
+            // afficher les détails de la visite dans les composants prévus à cet effet
+            Visite uneVisite = (Visite)dgvVisites.SelectedRows[0].Cells[0].Value!;
+
+            lblPraticien.Text = uneVisite.LePraticien?.NomPrenom ?? string.Empty;
+            lblEmail.Text = uneVisite.LePraticien?.Email ?? string.Empty;
+            lblRue.Text = uneVisite.LePraticien?.Rue ?? string.Empty;
+            lblTelephone.Text = uneVisite.LePraticien?.Telephone ?? string.Empty;
+            lblType.Text = uneVisite.LePraticien?.Type?.Libelle ?? string.Empty;
+            lblSpecialite.Text = uneVisite.LePraticien?.Specialite?.Libelle ?? string.Empty;
+            lblMotif.Text = uneVisite.LeMotif?.Libelle ?? string.Empty;
+            lblBilan.Text = string.IsNullOrEmpty(uneVisite.Bilan) ? string.Empty : uneVisite.Bilan;
+            lstMedicament.Items.Clear();
+            if (uneVisite.PremierMedicament != null)
+                lstMedicament.Items.Add(uneVisite.PremierMedicament.Nom);
+            if (uneVisite.SecondMedicament != null)
+                lstMedicament.Items.Add(uneVisite.SecondMedicament.Nom);
+            // remplir le datagridview des échantillons remis lors de la visite
+            dgvEchantillon.Rows.Clear();
+            foreach (KeyValuePair<Medicament, int> unCouple in uneVisite)
+            {
+                Medicament unMedicament = unCouple.Key;
+                int qte = unCouple.Value;
+                dgvEchantillon.Rows.Add(unMedicament.Nom, qte.ToString());
+            }
+        }
+        private void ViderAffichage()
+        {
+            lblPraticien.Text = string.Empty;
+            lblEmail.Text = string.Empty;
+            lblRue.Text = string.Empty;
+            lblTelephone.Text = string.Empty;
+            lblType.Text = string.Empty;
+            lblSpecialite.Text = string.Empty;
+            lblMotif.Text = string.Empty;
+            lblBilan.Text = string.Empty;
+            lstMedicament.Items.Clear();
+            dgvEchantillon.Rows.Clear();
+
+
+        }
+
+    }
+
+
+}
+            #endregion

@@ -366,18 +366,18 @@ namespace Donnee
 
             //solution A
             //var parametreSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
-            //* parametreSortie.Direction = ParameterDirection.Output;
-            //*cmd.Parameters.Add(parametreSortie);
-            //*cmd.ExecuteNonQuery();
-            //*return (int)parametreSortie.Value!;
+            //parametreSortie.Direction = ParameterDirection.Output;
+            //cmd.Parameters.Add(parametreSortie);
+            //cmd.ExecuteNonQuery();
+            //return (int)parametreSortie.Value!;
 
 
             //solution B
-            //*return Convert.ToInt32(cmd.ExecuteScalar());
+            return Convert.ToInt32(cmd.ExecuteScalar());
 
             //solution C
-            cmd.ExecuteNonQuery();
-            return Convert.ToInt32(cmd.LastInsertedId);
+            //cmd.ExecuteNonQuery();
+            //return Convert.ToInt32(cmd.LastInsertedId);
         }
 
         /// <summary>
@@ -386,10 +386,11 @@ namespace Donnee
         /// <param name="idVisite">ID de la visite à supprimer</param>
         static public void supprimerRendezVous(int idVisite)
         {
-            string sql = "DELETE FROM Visite WHERE id = @idVisite;";
+            string sql = "SupprimerRendezVous";
             using MySqlConnection cnx = ouvrirConnexion();
             using var cmd = new MySqlCommand(sql, cnx);
-            cmd.Parameters.AddWithValue("@idVisite", idVisite);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("_idVisite", idVisite);
             cmd.ExecuteNonQuery();
         }
 
@@ -400,11 +401,12 @@ namespace Donnee
         /// <param name="uneDateEtHeure">Nouvelle date et heure</param>
         static public void modifierRendezVous(int idVisite, DateTime uneDateEtHeure)
         {
-            string sql = "UPDATE Visite SET dateEtHeure = @dateEtHeure WHERE id = @idVisite;";
+            string sql = "ModifierRendezVous";
             using MySqlConnection cnx = ouvrirConnexion();
             using var cmd = new MySqlCommand(sql, cnx);
-            cmd.Parameters.AddWithValue("@idVisite", idVisite);
-            cmd.Parameters.AddWithValue("@dateEtHeure", uneDateEtHeure);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("_idVisite", idVisite);
+            cmd.Parameters.AddWithValue("_dateEtHeure", uneDateEtHeure);
             cmd.ExecuteNonQuery();
         }
 

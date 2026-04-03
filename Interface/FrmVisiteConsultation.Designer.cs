@@ -32,7 +32,7 @@
             panelCentral = new Panel();
             label4 = new Label();
             lstMedicament = new ListBox();
-            dgvEchantillion = new DataGridView();
+            dgvEchantillon = new DataGridView();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
@@ -45,9 +45,10 @@
             lblPraticien = new Label();
             dgvVisites = new DataGridView();
             label5 = new Label();
-            label6 = new Label();
+            lblBilan = new Label();
+            lblMotif = new Label();
             panelCentral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEchantillion).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvEchantillon).BeginInit();
             panelPraticien.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVisites).BeginInit();
             SuspendLayout();
@@ -59,10 +60,11 @@
             // panelCentral
             // 
             panelCentral.Anchor = AnchorStyles.None;
-            panelCentral.Controls.Add(label6);
+            panelCentral.Controls.Add(lblBilan);
+            panelCentral.Controls.Add(lblMotif);
             panelCentral.Controls.Add(label4);
             panelCentral.Controls.Add(lstMedicament);
-            panelCentral.Controls.Add(dgvEchantillion);
+            panelCentral.Controls.Add(dgvEchantillon);
             panelCentral.Controls.Add(label3);
             panelCentral.Controls.Add(label2);
             panelCentral.Controls.Add(label1);
@@ -91,13 +93,13 @@
             lstMedicament.Size = new Size(245, 64);
             lstMedicament.TabIndex = 6;
             // 
-            // dgvEchantillion
+            // dgvEchantillon
             // 
-            dgvEchantillion.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEchantillion.Location = new Point(560, 160);
-            dgvEchantillion.Name = "dgvEchantillion";
-            dgvEchantillion.Size = new Size(200, 100);
-            dgvEchantillion.TabIndex = 5;
+            dgvEchantillon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvEchantillon.Location = new Point(560, 160);
+            dgvEchantillon.Name = "dgvEchantillon";
+            dgvEchantillon.Size = new Size(200, 100);
+            dgvEchantillon.TabIndex = 5;
             // 
             // label3
             // 
@@ -212,14 +214,23 @@
             label5.TabIndex = 8;
             label5.Text = "Selectionner la visite pour afficher le detail";
             // 
-            // label6
+            // lblBilan
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(318, 186);
-            label6.Name = "label6";
-            label6.Size = new Size(38, 15);
-            label6.TabIndex = 8;
-            label6.Text = "label6";
+            lblBilan.AutoSize = true;
+            lblBilan.Location = new Point(278, 186);
+            lblBilan.Name = "lblBilan";
+            lblBilan.Size = new Size(38, 15);
+            lblBilan.TabIndex = 8;
+            lblBilan.Text = "";
+            // 
+            // lblMotif
+            // 
+            lblMotif.AutoSize = true;
+            lblMotif.Location = new Point(350, 134);
+            lblMotif.Name = "lblMotif";
+            lblMotif.Size = new Size(38, 15);
+            lblMotif.TabIndex = 9;
+            lblMotif.Text = "";
             // 
             // FrmVisiteConsultation
             // 
@@ -238,7 +249,7 @@
             Controls.SetChildIndex(label5, 0);
             panelCentral.ResumeLayout(false);
             panelCentral.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvEchantillion).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvEchantillon).EndInit();
             panelPraticien.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvVisites).EndInit();
             ResumeLayout(false);
@@ -258,11 +269,12 @@
         private Label lblSpecialite;
         private Label lblType;
         private ListBox lstMedicament;
-        private DataGridView dgvEchantillion;
+        private DataGridView dgvEchantillon;
         private Label label3;
         private Label label2;
         private Label label4;
         private Label label5;
-        private Label label6;
+        private Label lblBilan;
+        private Label lblMotif;
     }
 }

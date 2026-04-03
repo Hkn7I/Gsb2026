@@ -34,7 +34,6 @@
             panel3 = new Panel();
             dateTimePicker2 = new DateTimePicker();
             dateTimePicker1 = new DateTimePicker();
-            label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             pictureBox3 = new PictureBox();
@@ -42,7 +41,6 @@
             printDialog1 = new PrintDialog();
             printDocument1 = new System.Drawing.Printing.PrintDocument();
             printPreviewDialog1 = new PrintPreviewDialog();
-            label4 = new Label();
             panelCentral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
@@ -56,6 +54,7 @@
             // 
             // panelCentral
             // 
+            panelCentral.Anchor = AnchorStyles.None;
             panelCentral.Controls.Add(pictureBox1);
             panelCentral.Controls.Add(panel3);
             panelCentral.Location = new Point(0, 101);
@@ -77,7 +76,6 @@
             // 
             panel3.Controls.Add(dateTimePicker2);
             panel3.Controls.Add(dateTimePicker1);
-            panel3.Controls.Add(label3);
             panel3.Controls.Add(label2);
             panel3.Controls.Add(label1);
             panel3.Controls.Add(pictureBox3);
@@ -100,17 +98,6 @@
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(200, 23);
             dateTimePicker1.TabIndex = 2;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.Red;
-            label3.Location = new Point(47, 139);
-            label3.Name = "label3";
-            label3.Size = new Size(30, 15);
-            label3.TabIndex = 4;
-            label3.Text = "msg";
             // 
             // label2
             // 
@@ -135,7 +122,7 @@
             pictureBox3.BackgroundImage = Properties.Resources.imprimer;
             pictureBox3.Location = new Point(157, 161);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(145, 130);
+            pictureBox3.Size = new Size(139, 130);
             pictureBox3.TabIndex = 1;
             pictureBox3.TabStop = false;
             // 
@@ -164,23 +151,11 @@
             printPreviewDialog1.Name = "printPreviewDialog1";
             printPreviewDialog1.Visible = false;
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.Red;
-            label4.Location = new Point(19, 81);
-            label4.Name = "label4";
-            label4.Size = new Size(30, 15);
-            label4.TabIndex = 14;
-            label4.Text = "msg";
-            // 
             // FrmVisiteImpression
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(label4);
             Controls.Add(panelCentral);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
@@ -189,7 +164,6 @@
             Text = "FrmVisiteImpression";
             Controls.SetChildIndex(lblTitre, 0);
             Controls.SetChildIndex(panelCentral, 0);
-            Controls.SetChildIndex(label4, 0);
             panelCentral.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
@@ -209,12 +183,10 @@
         private PictureBox pictureBox1;
         private DateTimePicker dateTimePicker2;
         private DateTimePicker dateTimePicker1;
-        private Label label3;
         private Label label2;
         private Label label1;
         private PictureBox pictureBox3;
         private PictureBox pictureBox2;
         private PrintPreviewDialog printPreviewDialog1;
-        private Label label4;
     }
 }
