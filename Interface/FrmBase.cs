@@ -80,7 +80,7 @@ namespace Interface
 
         private void nouveauPraticien_Click(object sender, EventArgs e)
         {
-            // ouvrirFormulaire(new FrmPraticienAjout(session));
+            ouvrirFormulaire(new FrmPraticienAjout(session));
         }
 
         private void modifierPraticien_Click(object sender, EventArgs e)

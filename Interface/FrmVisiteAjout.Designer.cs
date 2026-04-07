@@ -90,7 +90,7 @@
             // 
             button1.BackColor = Color.Red;
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(174, 193);
+            button1.Location = new Point(134, 193);
             button1.Name = "button1";
             button1.Size = new Size(111, 34);
             button1.TabIndex = 15;
