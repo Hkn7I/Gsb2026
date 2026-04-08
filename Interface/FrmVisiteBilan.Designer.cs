@@ -31,15 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmVisiteBilan));
             panel6 = new Panel();
             panel8 = new Panel();
+            label5 = new Label();
             button2 = new Button();
             panel10 = new Panel();
             numericUpDown1 = new NumericUpDown();
             textBox1 = new TextBox();
             panel7 = new Panel();
+            label7 = new Label();
+            label6 = new Label();
             panel6.SuspendLayout();
             panel8.SuspendLayout();
-            panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            panel7.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitre
@@ -61,6 +64,8 @@
             // 
             panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel8.BorderStyle = BorderStyle.FixedSingle;
+            panel8.Controls.Add(numericUpDown1);
+            panel8.Controls.Add(label5);
             panel8.Controls.Add(button2);
             panel8.Controls.Add(panel10);
             panel8.Controls.Add(textBox1);
@@ -68,6 +73,15 @@
             panel8.Name = "panel8";
             panel8.Size = new Size(776, 219);
             panel8.TabIndex = 1;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(522, 5);
+            label5.Name = "label5";
+            label5.Size = new Size(38, 15);
+            label5.TabIndex = 1;
+            label5.Text = "label5";
             // 
             // button2
             // 
@@ -83,7 +97,6 @@
             // 
             panel10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             panel10.BorderStyle = BorderStyle.FixedSingle;
-            panel10.Controls.Add(numericUpDown1);
             panel10.Location = new Point(509, 23);
             panel10.Name = "panel10";
             panel10.Size = new Size(249, 175);
@@ -91,11 +104,11 @@
             // 
             // numericUpDown1
             // 
-            numericUpDown1.Location = new Point(50, 12);
+            numericUpDown1.Location = new Point(650, 5);
             numericUpDown1.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(120, 23);
+            numericUpDown1.Size = new Size(61, 23);
             numericUpDown1.TabIndex = 0;
             numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -111,10 +124,30 @@
             // 
             panel7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel7.BorderStyle = BorderStyle.FixedSingle;
+            panel7.Controls.Add(label7);
+            panel7.Controls.Add(label6);
             panel7.Location = new Point(3, 14);
             panel7.Name = "panel7";
             panel7.Size = new Size(784, 47);
             panel7.TabIndex = 0;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(394, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(33, 15);
+            label7.TabIndex = 4;
+            label7.Text = "Chez";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(97, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(19, 15);
+            label6.TabIndex = 3;
+            label6.Text = "Le";
             // 
             // FrmVisiteBilan
             // 
@@ -132,8 +165,9 @@
             panel6.ResumeLayout(false);
             panel8.ResumeLayout(false);
             panel8.PerformLayout();
-            panel10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -160,5 +194,8 @@
         private Panel panel10;
         private Button button2;
         private NumericUpDown numericUpDown1;
+        private Label label5;
+        private Label label7;
+        private Label label6;
     }
 }

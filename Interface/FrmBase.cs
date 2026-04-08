@@ -85,7 +85,7 @@ namespace Interface
 
         private void modifierPraticien_Click(object sender, EventArgs e)
         {
-            // ouvrirFormulaire(new FrmPraticienModification(session));
+            ouvrirFormulaire(new FrmPraticienModification(session));
         }
 
         #endregion

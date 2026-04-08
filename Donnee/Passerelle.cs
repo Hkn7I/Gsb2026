@@ -355,29 +355,33 @@ namespace Donnee
         /// <returns>ID de la nouvelle visite, ou 0 en cas d'erreur</returns>
         static public int ajouterRendezVous(int idPraticien, int idMotif, DateTime uneDate)
         {
-            string sql = "AjouterRendezVous";
+            string sql = "ajouterRendezVous";
+
             using MySqlConnection cnx = ouvrirConnexion();
+
             using var cmd = new MySqlCommand(sql, cnx);
             cmd.CommandType = CommandType.StoredProcedure;
-            //passer les paramètres 
+
+            // passer les paramètres
             cmd.Parameters.AddWithValue("_idPraticien", idPraticien);
             cmd.Parameters.AddWithValue("_idMotif", idMotif);
-            cmd.Parameters.AddWithValue("_dateEtHeure", uneDate);
+            cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
 
-            //solution A
-            //var parametreSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
-            //parametreSortie.Direction = ParameterDirection.Output;
-            //cmd.Parameters.Add(parametreSortie);
-            //cmd.ExecuteNonQuery();
-            //return (int)parametreSortie.Value!;
-
-
-            //solution B
+            /*
+			// solution A
+			var paramSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
+            paramSortie.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(paramSortie);
+            cmd.ExecuteNonQuery();
+            return (int) paramSortie.Value!;
+            
+            // solution B
             return Convert.ToInt32(cmd.ExecuteScalar());
+            */
+            // solution C
+            cmd.ExecuteNonQuery();
+            return Convert.ToInt32(cmd.LastInsertedId);
 
-            //solution C
-            //cmd.ExecuteNonQuery();
-            //return Convert.ToInt32(cmd.LastInsertedId);
         }
 
         /// <summary>
@@ -386,10 +390,10 @@ namespace Donnee
         /// <param name="idVisite">ID de la visite à supprimer</param>
         static public void supprimerRendezVous(int idVisite)
         {
-            string sql = "SupprimerRendezVous";
             using MySqlConnection cnx = ouvrirConnexion();
-            using var cmd = new MySqlCommand(sql, cnx);
+            using var cmd = new MySqlCommand("supprimerRendezVous", cnx);
             cmd.CommandType = CommandType.StoredProcedure;
+
             cmd.Parameters.AddWithValue("_idVisite", idVisite);
             cmd.ExecuteNonQuery();
         }
@@ -401,10 +405,10 @@ namespace Donnee
         /// <param name="uneDateEtHeure">Nouvelle date et heure</param>
         static public void modifierRendezVous(int idVisite, DateTime uneDateEtHeure)
         {
-            string sql = "ModifierRendezVous";
             using MySqlConnection cnx = ouvrirConnexion();
-            using var cmd = new MySqlCommand(sql, cnx);
+            using var cmd = new MySqlCommand("modifierRendezVous", cnx);
             cmd.CommandType = CommandType.StoredProcedure;
+
             cmd.Parameters.AddWithValue("_idVisite", idVisite);
             cmd.Parameters.AddWithValue("_dateEtHeure", uneDateEtHeure);
             cmd.ExecuteNonQuery();
@@ -417,47 +421,74 @@ namespace Donnee
         static public void enregistrerBilan(Visite uneVisite)
         {
             using MySqlConnection cnx = ouvrirConnexion();
+
+            // 1. "Déclaration d'une transaction"
             using MySqlTransaction uneTransaction = cnx.BeginTransaction();
 
             try
             {
-                // j appelle la procedure pour mettre a jour le bilan de la visite
-                using MySqlCommand cmd = new MySqlCommand("enregistrerBilanVisite", cnx);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Transaction = uneTransaction;
+                // 2. "modification d'un enregistrement dans la table visite"
+                using (MySqlCommand cmd = new MySqlCommand("enregistrerBilanVisite", cnx))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("_idVisite", uneVisite.Id);
-                cmd.Parameters.AddWithValue("_bilan", uneVisite.Bilan);
-                cmd.Parameters.AddWithValue("_premierMedicament", uneVisite.PremierMedicament?.Id ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("_secondMedicament", uneVisite.SecondMedicament?.Id ?? (object)DBNull.Value);
+                    // "attacher la commande à la transaction"
+                    cmd.Transaction = uneTransaction;
 
-                cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("_idVisite", uneVisite.Id);
+                    cmd.Parameters.AddWithValue("_bilan", uneVisite.Bilan);
+                    cmd.Parameters.AddWithValue("_premierMedicament", uneVisite.PremierMedicament?.Id);
+                    cmd.Parameters.AddWithValue("_secondMedicament", uneVisite.SecondMedicament?.Id ?? (object)DBNull.Value);
 
-                // tout s est bien passé je valide la transaction
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 3. "ajout de 0 à n enregistrements dans la table medicamentDistribué (échantillon)"
+                foreach (KeyValuePair<Medicament, int> unEchantillon in uneVisite)
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("ajouterEchantillon", cnx))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // "attacher la commande à la transaction"
+                        cmd.Transaction = uneTransaction;
+
+                        cmd.Parameters.AddWithValue("_idVisite", uneVisite.Id);
+                        cmd.Parameters.AddWithValue("_idMedicament", unEchantillon.Key.Id);
+                        cmd.Parameters.AddWithValue("_quantite", unEchantillon.Value);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                // 4. "valider la transaction" (Si la visite et tous les échantillons sont passés sans erreur)
                 uneTransaction.Commit();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // une erreur s est produite j annule tout
+                // 5. "annuler la transaction" (En cas de plantage d'une des requêtes)
                 uneTransaction.Rollback();
-                throw new Exception("Erreur lors de l'enregistrement du bilan : " + e.Message);
+                throw;
             }
         }
 
         /// <summary>
-        /// Supprime un praticien de la base de données.
+        /// Ajoute un nouveau praticien en base de données.
         /// </summary>
-        /// <param name="id">ID du praticien à supprimer</param>
-        static public void supprimerPraticien(int id)
+        /// <param name="nom">Nom du praticien</param>
+        /// <param name="prenom">Prénom du praticien</param>
+        /// <param name="rue">Adresse</param>
+        /// <param name="codePostal">Code postal</param>
+        /// <param name="ville">Ville</param>
+        /// <param name="telephone">Téléphone</param>
+        /// <param name="email">Email</param>
+        /// <param name="unType">Type de praticien</param>
+        /// <param name="uneSpecialite">Spécialité</param>
+        /// <returns>ID du nouveau praticien</returns>
+        static public int ajouterPraticien(string nom, string prenom, string rue, string codePostal, string ville, string telephone, string email, string unType, string? uneSpecialite)
         {
-        }
-
-        static public int ajouterPraticien(string nom, string prenom, string rue, string codePostal,
-    string ville, string telephone, string email, string unType, string? uneSpecialite)
-        {
-            string sql = "ajouterPraticien";
             using MySqlConnection cnx = ouvrirConnexion();
-            using var cmd = new MySqlCommand(sql, cnx);
+            using MySqlCommand cmd = new MySqlCommand("ajouterPraticien", cnx);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("_nom", nom);
@@ -468,11 +499,51 @@ namespace Donnee
             cmd.Parameters.AddWithValue("_telephone", telephone);
             cmd.Parameters.AddWithValue("_email", email);
             cmd.Parameters.AddWithValue("_idType", unType);
-            cmd.Parameters.AddWithValue("_idSpecialite", (object?)uneSpecialite ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("_idSpecialite", string.IsNullOrWhiteSpace(uneSpecialite) ? DBNull.Value : uneSpecialite);
 
             cmd.ExecuteNonQuery();
             return Convert.ToInt32(cmd.LastInsertedId);
         }
+
+        /// <summary>
+        /// <summary>
+        /// Modifie les informations d'un praticien en base de données.
+        /// </summary>
+        /// <param name="lePraticien">Objet Praticien contenant les nouvelles informations</param>
+        static public void modifierPraticien(Praticien lePraticien)
+        {
+            using MySqlConnection cnx = ouvrirConnexion();
+            using MySqlCommand cmd = new MySqlCommand("modifierPraticien", cnx);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("_id", lePraticien.Id);
+            cmd.Parameters.AddWithValue("_nom", lePraticien.Nom);
+            cmd.Parameters.AddWithValue("_prenom", lePraticien.Prenom);
+            cmd.Parameters.AddWithValue("_rue", lePraticien.Rue);
+            cmd.Parameters.AddWithValue("_codePostal", lePraticien.CodePostal);
+            cmd.Parameters.AddWithValue("_ville", lePraticien.Ville);
+            cmd.Parameters.AddWithValue("_telephone", lePraticien.Telephone);
+            cmd.Parameters.AddWithValue("_email", lePraticien.Email);
+            cmd.Parameters.AddWithValue("_idType", lePraticien.Type?.Id);
+            cmd.Parameters.AddWithValue("_idSpecialite", string.IsNullOrWhiteSpace(lePraticien.Specialite?.Id) ? DBNull.Value : lePraticien.Specialite.Id);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Supprime un praticien de la base de données.
+        /// </summary>
+        /// <param name="id">ID du praticien à supprimer</param>
+        static public void supprimerPraticien(int id)
+        {
+            using MySqlConnection cnx = ouvrirConnexion();
+            using MySqlCommand cmd = new MySqlCommand("supprimerPraticien", cnx);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("_id", id);
+            cmd.ExecuteNonQuery();
+        }
+
 
 
 

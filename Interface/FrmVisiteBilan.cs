@@ -1,4 +1,5 @@
-﻿using Metier;
+﻿using Donnee;
+using Metier;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,13 +12,13 @@ namespace Interface
 {
     public partial class FrmVisiteBilan : FrmBase
     {
+
+
         public FrmVisiteBilan(Session uneSession) : base(uneSession)
         {
             InitializeComponent();
         }
 
-       
-
-        
     }
 }
+
