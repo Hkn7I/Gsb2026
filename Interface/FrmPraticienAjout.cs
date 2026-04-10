@@ -30,20 +30,23 @@ namespace Interface
             // Remplissage cbxType
             cbxType.DataSource = session.LesTypesPraticien;
             cbxType.DisplayMember = "Libelle";
+            cbxType.ValueMember = "Id";
             cbxType.SelectedIndex = -1;
+            cbxType.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Remplissage cbxSpecialite (optionnel)
             cbxSpecialite.DataSource = session.LesSpecialites;
             cbxSpecialite.DisplayMember = "Libelle";
+            cbxSpecialite.ValueMember = "Id";
             cbxSpecialite.SelectedIndex = -1;
+            cbxSpecialite.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // Autocomplétion sur la ville
-            txtVille.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            txtVille.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            var source = new AutoCompleteStringCollection();
-            foreach (Ville ville in session.MesVilles)
-                source.Add(ville.Nom);
-            txtVille.AutoCompleteCustomSource = source;
+            // Remplissage cbxVille
+            cbxVille.DataSource = session.MesVilles;
+            cbxVille.DisplayMember = "Nom";
+            cbxVille.ValueMember = "Code";
+            cbxVille.SelectedIndex = -1;
+            cbxVille.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Cacher tous les messages d'erreur au départ
             messageNom.Visible = false;
@@ -74,16 +77,9 @@ namespace Interface
 
         private bool controlerVille()
         {
-            if (string.IsNullOrWhiteSpace(txtVille.Text))
+            if (cbxVille.SelectedIndex == -1)
             {
                 messageVille.Text = "La ville doit être renseignée";
-                messageVille.Visible = true;
-                return false;
-            }
-            Ville? laVille = session.MesVilles.Find(x => x.Nom == txtVille.Text);
-            if (laVille == null)
-            {
-                messageVille.Text = "Cette ville ne fait pas partie du secteur géré";
                 messageVille.Visible = true;
                 return false;
             }
@@ -157,7 +153,7 @@ namespace Interface
         private void ajouter()
         {
             // Récupération des valeurs
-            Ville laVille = session.MesVilles.Find(x => x.Nom == txtVille.Text)!;
+            Ville laVille = (Ville)cbxVille.SelectedItem!;
             string codePostal = laVille.Code;
 
             string idType = ((TypePraticien)cbxType.SelectedItem!).Id;
@@ -176,7 +172,7 @@ namespace Interface
                     txtPrenom.Text.Trim(),
                     txtRue.Text.Trim(),
                     codePostal,
-                    txtVille.Text.Trim(),
+                    laVille.Nom,
                     telephone,
                     txtEmail.Text.Trim(),
                     idType,
@@ -195,7 +191,7 @@ namespace Interface
                     txtPrenom.Text.Trim(),
                     txtRue.Text.Trim(),
                     codePostal,
-                    txtVille.Text.Trim(),
+                    laVille.Nom,
                     txtEmail.Text.Trim(),
                     telephone,
                     letype,
@@ -209,7 +205,7 @@ namespace Interface
                 txtNom.Clear();
                 txtPrenom.Clear();
                 txtRue.Clear();
-                txtVille.Clear();
+                cbxVille.SelectedIndex = -1;
                 txtEmail.Clear();
                 mtbTelephone.Clear();
                 cbxType.SelectedIndex = -1;

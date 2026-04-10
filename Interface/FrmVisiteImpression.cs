@@ -27,11 +27,13 @@ namespace Interface
             // recentrer le formulaire
             centrerFormulaire();
 
-            // initialisation de la collection des visites
-            if (session?.MesVisites != null)
-            {
-                lesVisites = session.MesVisites.ToList();
-            }
+            dateTimePicker1.Format = DateTimePickerFormat.Short;
+            dateTimePicker2.Format = DateTimePickerFormat.Short;
+            dateTimePicker1.Value = DateTime.Today;
+            dateTimePicker2.Value = DateTime.Today.AddMonths(2);
+
+            // initialisation de la collection des visites actuelles
+            lesVisites = getVisitesActuelles();
 
             // paramétrage des composants spécifiques à ce formulaire
             parametrerComposant();
@@ -50,10 +52,37 @@ namespace Interface
             this.pictureBox2.Click += new System.EventHandler(this.BtnApercu_Click);
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument1_PrintPage);
         }
+
+            private List<Visite> getVisitesActuelles()
+            {
+                if (session?.MesVisites == null)
+                    return new List<Visite>();
+
+                return session.MesVisites
+                    .Where(v => v.Bilan is null)
+                    .OrderBy(v => v.DateEtHeure)
+                    .ToList();
+            }
+
+            private bool controlerPeriode()
+            {
+                if (dateTimePicker1.Value.Date > dateTimePicker2.Value.Date)
+                {
+                    MessageBox.Show("La date de début doit être inférieure ou égale à la date de fin.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                return true;
+            }
+
             private int _indexImpression = 0;
 
             private void BtnImprimer_Click(object? sender, EventArgs e)
             {
+                if (!controlerPeriode()) return;
+
+                lesVisites = getVisitesActuelles();
+
                 if (printDialog1.ShowDialog() == DialogResult.OK)
                 {
                     _indexImpression = 0;
@@ -64,6 +93,10 @@ namespace Interface
 
             private void BtnApercu_Click(object? sender, EventArgs e)
             {
+                if (!controlerPeriode()) return;
+
+                lesVisites = getVisitesActuelles();
+
                 _indexImpression = 0;
                 printPreviewDialog1.Document = printDocument1;
                 printPreviewDialog1.ShowDialog();
@@ -90,7 +123,9 @@ namespace Interface
                     yPos += 40;
                 }
 
-                var visitesFiltrees = lesVisites.Where(v => v.DateEtHeure.Date >= dateDebut && v.DateEtHeure.Date <= dateFin).ToList();
+                var visitesFiltrees = lesVisites
+                    .Where(v => v.DateEtHeure.Date >= dateDebut && v.DateEtHeure.Date <= dateFin)
+                    .ToList();
 
                 if (visitesFiltrees.Count == 0 && _indexImpression == 0)
                 {

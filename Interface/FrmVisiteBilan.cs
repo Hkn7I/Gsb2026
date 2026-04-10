@@ -19,6 +19,10 @@ namespace Interface
             InitializeComponent();
         }
 
+        private void dgvEchantillion_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
 

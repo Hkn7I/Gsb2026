@@ -367,20 +367,9 @@ namespace Donnee
             cmd.Parameters.AddWithValue("_idMotif", idMotif);
             cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
 
-            /*
-			// solution A
-			var paramSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
-            paramSortie.Direction = ParameterDirection.Output;
-            cmd.Parameters.Add(paramSortie);
             cmd.ExecuteNonQuery();
-            return (int) paramSortie.Value!;
-            
-            // solution B
-            return Convert.ToInt32(cmd.ExecuteScalar());
-            */
-            // solution C
-            cmd.ExecuteNonQuery();
-            return Convert.ToInt32(cmd.LastInsertedId);
+            using var cmdLastId = new MySqlCommand("SELECT LAST_INSERT_ID();", cnx);
+            return Convert.ToInt32(cmdLastId.ExecuteScalar());
 
         }
 
@@ -502,7 +491,8 @@ namespace Donnee
             cmd.Parameters.AddWithValue("_idSpecialite", string.IsNullOrWhiteSpace(uneSpecialite) ? DBNull.Value : uneSpecialite);
 
             cmd.ExecuteNonQuery();
-            return Convert.ToInt32(cmd.LastInsertedId);
+            using var cmdLastId = new MySqlCommand("SELECT LAST_INSERT_ID();", cnx);
+            return Convert.ToInt32(cmdLastId.ExecuteScalar());
         }
 
         /// <summary>

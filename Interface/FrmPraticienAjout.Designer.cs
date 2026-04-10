@@ -33,7 +33,7 @@ namespace Interface
             messagePrenom = new Label();
             messageSpecialité = new Label();
             messageType = new Label();
-            messageEmail = new Label();
+            messageTel = new Label();
             messageTelephone = new Label();
             messageRue = new Label();
             messageNom = new Label();
@@ -48,7 +48,7 @@ namespace Interface
             cbxSpecialite = new ComboBox();
             btnAjouter = new Button();
             txtEmail = new TextBox();
-            txtVille = new TextBox();
+            cbxVille = new ComboBox();
             txtRue = new TextBox();
             txtPrenom = new TextBox();
             txtNom = new TextBox();
@@ -67,7 +67,7 @@ namespace Interface
             PanelCentral.Controls.Add(messagePrenom);
             PanelCentral.Controls.Add(messageSpecialité);
             PanelCentral.Controls.Add(messageType);
-            PanelCentral.Controls.Add(messageEmail);
+            PanelCentral.Controls.Add(messageTel);
             PanelCentral.Controls.Add(messageTelephone);
             PanelCentral.Controls.Add(messageRue);
             PanelCentral.Controls.Add(messageNom);
@@ -82,7 +82,7 @@ namespace Interface
             PanelCentral.Controls.Add(cbxSpecialite);
             PanelCentral.Controls.Add(btnAjouter);
             PanelCentral.Controls.Add(txtEmail);
-            PanelCentral.Controls.Add(txtVille);
+            PanelCentral.Controls.Add(cbxVille);
             PanelCentral.Controls.Add(txtRue);
             PanelCentral.Controls.Add(txtPrenom);
             PanelCentral.Controls.Add(txtNom);
@@ -98,7 +98,7 @@ namespace Interface
             messagePrenom.AutoSize = true;
             messagePrenom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             messagePrenom.ForeColor = Color.Red;
-            messagePrenom.Location = new Point(605, 56);
+            messagePrenom.Location = new Point(596, 56);
             messagePrenom.Name = "messagePrenom";
             messagePrenom.Size = new Size(30, 15);
             messagePrenom.TabIndex = 26;
@@ -120,29 +120,29 @@ namespace Interface
             messageType.AutoSize = true;
             messageType.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             messageType.ForeColor = Color.Red;
-            messageType.Location = new Point(29, 241);
+            messageType.Location = new Point(25, 315);
             messageType.Name = "messageType";
             messageType.Size = new Size(30, 15);
             messageType.TabIndex = 22;
             messageType.Text = "msg";
             // 
-            // messageEmail
+            // messageTel
             // 
-            messageEmail.AutoSize = true;
-            messageEmail.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            messageEmail.ForeColor = Color.Red;
-            messageEmail.Location = new Point(31, 173);
-            messageEmail.Name = "messageEmail";
-            messageEmail.Size = new Size(30, 15);
-            messageEmail.TabIndex = 21;
-            messageEmail.Text = "msg";
+            messageTel.AutoSize = true;
+            messageTel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            messageTel.ForeColor = Color.Red;
+            messageTel.Location = new Point(3, 182);
+            messageTel.Name = "messageTel";
+            messageTel.Size = new Size(30, 15);
+            messageTel.TabIndex = 20;
+            messageTel.Text = "msg";
             // 
             // messageTelephone
             // 
             messageTelephone.AutoSize = true;
             messageTelephone.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             messageTelephone.ForeColor = Color.Red;
-            messageTelephone.Location = new Point(25, 315);
+            messageTelephone.Location = new Point(27, 241);
             messageTelephone.Name = "messageTelephone";
             messageTelephone.Size = new Size(30, 15);
             messageTelephone.TabIndex = 20;
@@ -258,6 +258,7 @@ namespace Interface
             btnAjouter.TabIndex = 8;
             btnAjouter.Text = "Ajouter";
             btnAjouter.UseVisualStyleBackColor = false;
+            btnAjouter.Click += btnAjouter_Click;
             // 
             // txtEmail
             // 
@@ -266,12 +267,13 @@ namespace Interface
             txtEmail.Size = new Size(286, 23);
             txtEmail.TabIndex = 7;
             // 
-            // txtVille
+            // cbxVille
             // 
-            txtVille.Location = new Point(29, 156);
-            txtVille.Name = "txtVille";
-            txtVille.Size = new Size(842, 23);
-            txtVille.TabIndex = 5;
+            cbxVille.FormattingEnabled = true;
+            cbxVille.Location = new Point(29, 156);
+            cbxVille.Name = "cbxVille";
+            cbxVille.Size = new Size(842, 23);
+            cbxVille.TabIndex = 5;
             // 
             // txtRue
             // 
@@ -324,6 +326,7 @@ namespace Interface
             Location = new Point(0, 0);
             Name = "FrmPraticienAjout";
             Text = "FrmPraticienAjout";
+            Load += FrmPraticienAjout_Load;
             Controls.SetChildIndex(lblTitre, 0);
             Controls.SetChildIndex(PanelCentral, 0);
             PanelCentral.ResumeLayout(false);
@@ -342,7 +345,7 @@ namespace Interface
         private ComboBox cbxSpecialite;
         private Button btnAjouter;
         private TextBox txtEmail;
-        private TextBox txtVille;
+        private ComboBox cbxVille;
         private TextBox txtRue;
         private TextBox txtPrenom;
         private Label label8;
@@ -360,5 +363,6 @@ namespace Interface
         private Label messageTelephone;
         private Label messageRue;
         private Label messageNom;
+        private Label messageTel;
     }
 }

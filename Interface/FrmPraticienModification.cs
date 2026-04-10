@@ -65,6 +65,14 @@ namespace Interface
             button1.Click += btnModifier_Click;
             button2.Click += btnSupprimer_Click;
             comboBox1.SelectedIndexChanged += cbxPraticien_SelectedIndexChanged;
+
+            // Masquer les messages d'erreur au départ
+            label1.Visible = false;
+            label2.Visible = false;
+            label3.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
         }
 
        
@@ -135,9 +143,11 @@ namespace Interface
             if (string.IsNullOrWhiteSpace(txt.Text))
             {
                 lblMessage.Text = message;
+                lblMessage.Visible = true;
                 return false;
             }
             lblMessage.Text = string.Empty;
+            lblMessage.Visible = false;
             return true;
         }
 
@@ -146,14 +156,17 @@ namespace Interface
             if (string.IsNullOrWhiteSpace(txtMail.Text))
             {
                 label6.Text = string.Empty;
+                label6.Visible = false;
                 return true; // non obligatoire
             }
             if (!txtMail.Text.Contains("@") || !txtMail.Text.Contains("."))
             {
                 label6.Text = "L'adresse email n'est pas valide";
+                label6.Visible = true;
                 return false;
             }
             label6.Text = string.Empty;
+            label6.Visible = false;
             return true;
         }
 
@@ -162,9 +175,11 @@ namespace Interface
             if (maskedTextBox1.MaskCompleted)
             {
                 label3.Text = string.Empty;
+                label3.Visible = false;
                 return true;
             }
             label3.Text = "Le téléphone doit comporter 10 chiffres";
+            label3.Visible = true;
             return false;
         }
 
@@ -193,6 +208,7 @@ namespace Interface
         {
             try
             {
+                label5.Visible = false;
                 Praticien lePraticien = (Praticien)comboBox1.SelectedItem!;
                 Ville ville = (Ville)cbxVille.SelectedItem!;
 
@@ -222,7 +238,8 @@ namespace Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                label5.Text = ex.Message;
+                label5.Visible = true;
             }
         }
 
@@ -244,6 +261,7 @@ namespace Interface
         {
             try
             {
+                label5.Visible = false;
                 Praticien lePraticien = (Praticien)comboBox1.SelectedItem!;
 
                 Passerelle.supprimerPraticien(lePraticien.Id);
@@ -269,7 +287,8 @@ namespace Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                label5.Text = ex.Message;
+                label5.Visible = true;
             }
         }
     }
